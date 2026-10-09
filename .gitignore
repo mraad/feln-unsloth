@@ -1,0 +1,9 @@
+__pycache__/
+.venv/
+.resume
+.claude/settings.local.json
+unsloth_compiled_cache/
+runs/*/adapter/
+runs/*/merged/
+runs/*/checkpoints/
+.DS_Store
