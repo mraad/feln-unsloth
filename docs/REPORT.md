@@ -1,7 +1,7 @@
 # FELN layer-selection decision model: report
 
 Date: 2026-10-09. Machine: gc1 (AWS, 4x NVIDIA RTX PRO 6000 Blackwell, 96 GB each).
-Repository: <https://github.com/mraad/feln-unsloth> (private).
+Repository: <https://github.com/mraad/feln-unsloth>.
 Method: Unsloth decision models, following
 [Train your own Decision Model with Unsloth](https://unsloth.ai/docs/basics/train-your-own-decision-model-with-unsloth).
 
