@@ -68,6 +68,7 @@ question, see the primary layer, the filter layers, the confidence (flagged belo
 
 ```bash
 # gc1, in tmux (stopped 2026-10-09; start it again with:)
+uv pip install -p .venv/bin/python fastapi uvicorn   # once
 CUDA_VISIBLE_DEVICES=0 .venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8095
 # Mac
 ssh -fN -L 8095:127.0.0.1:8095 gc1 && open http://localhost:8095
