@@ -367,6 +367,7 @@ installed in this venv.
 
 ## 16. References
 
+- Blog post on this project: [FELN Decisions: Teaching a Small Model Which Layers a Question Needs](https://thunderheadxpler.blogspot.com/2026/10/feln-decisions-teaching-small-model.html)
 - Unsloth, *Train your own Decision Model with Unsloth*:
   <https://unsloth.ai/docs/basics/train-your-own-decision-model-with-unsloth>
 - Unsloth, decision models / Decision API (Laya, Jev): <https://unsloth.ai/docs/models/decision-laya>
