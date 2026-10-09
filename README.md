@@ -7,6 +7,8 @@ a Clef-style scoring head, no text generation), following
 [Train your own Decision Model with Unsloth](https://unsloth.ai/docs/basics/train-your-own-decision-model-with-unsloth).
 Every answer comes with a calibrated probability.
 
+**Blog post: [FELN Decisions: Teaching a Small Model Which Layers a Question Needs](https://thunderheadxpler.blogspot.com/2026/10/feln-decisions-teaching-small-model.html)**
+
 **Full write-up: [docs/REPORT.md](docs/REPORT.md)** covers data, label design, split,
 environment, recipe, all runs, error analysis, measurement notes and how to reproduce.
 
