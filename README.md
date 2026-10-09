@@ -60,6 +60,8 @@ CUDA_VISIBLE_DEVICES=0 .venv/bin/python train.py --model unsloth/Qwen3.5-0.8B --
 
 ## Web tester
 
+![FELN Layer Decider: an ambiguous question flagged as uncertain, with all 12 option probabilities](docs/screenshot.png)
+
 `app.py` (FastAPI) + `index.html` (vanilla JS, one file). Pick any trained run, type a
 question, see the primary layer, the filter layers, the confidence (flagged below the
 0.7 gate) and all 12 probabilities.
