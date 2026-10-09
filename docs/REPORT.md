@@ -119,7 +119,7 @@ The keyword rule finds the primary layer 93% of the time but the full layer set 
 | Code | `~/feln-unsloth` (rsync of this folder) |
 | Python env | `~/feln-unsloth/.venv`, `uv venv -p 3.12`, `uv pip install --upgrade unsloth datasets` |
 | Versions | unsloth 2026.10.3, unsloth-zoo 2026.10.3, torch 2.14.1+cu130, transformers 5.17.0, trl 1.13.0; fastapi 0.143.0, uvicorn 0.54.0 (web tester) |
-| tmux | session `feln-unsloth`, one window per run (`setup`, `smoke`, `full`, `q08-*`, `gemma4-*`, `llama32-3b`, `qwen35-2b`, `laya`) plus `web` (web tester) |
+| tmux | session `feln-unsloth`, one window per run (`setup`, `smoke`, `full`, `q08-*`, `gemma4-*`, `llama32-3b`, `qwen35-2b`, `laya`) plus `web` (web tester, now stopped) |
 | Logs | `~/feln-unsloth/logs/<run>.log` (each ends with `EXIT_CODE n`) |
 | Outputs | `~/feln-unsloth/runs/<run>/` |
 
@@ -356,8 +356,8 @@ In this repository:
 
 ## 15. Web tester
 
-`app.py` serves `index.html` and two endpoints on gc1 (`127.0.0.1:8095`, tmux window
-`feln-unsloth:web`): `GET /api/models` lists every run with an `adapter/` (plus
+`app.py` serves `index.html` and two endpoints on gc1 (`127.0.0.1:8095`, ran in tmux
+window `feln-unsloth:web`; stopped 2026-10-09, along with the SSH tunnel): `GET /api/models` lists every run with an `adapter/` (plus
 `laya/merged`), and `POST /api/decide` runs `FastDecisionModel.predict` with the same
 `QUESTIONS` used in training. Models load lazily and stay cached, and a lock keeps GPU
 calls one at a time. Measured: first request 14 s (load), then about 85 ms per

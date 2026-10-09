@@ -35,5 +35,5 @@ Data facts (`~/Documents/ArcGIS/Projects/NorthSea/FELN.json`, 3000 rows):
 - 2 confident misses are FELN.json humanize label noise (swapped wells/pipelines; dropped layer word). Not fixed here.
 - 0.8B x4 (one per GPU): r16 94.3% (= 4B), seed1 93.7%, r64 95.3%, 5ep 93.3% (overconfident). 12/17 misses shared with 4B; size is not the bottleneck.
 - Round 3: gemma4-e4b 95.3%, qwen35-2b 95.0%, llama32-3b 94.3%, gemma4-e2b 91.7%, laya 90.3-92.0% (16-bit, 2 min). Laya save crash fixed (merged only). Docs: docs/REPORT.md.
-- Web tester: app.py (FastAPI) + index.html (vanilla JS) on gc1 127.0.0.1:8095, tmux feln-unsloth:web, via SSH tunnel. ~85 ms/question after 14 s first load.
+- Web tester: app.py (FastAPI) + index.html (vanilla JS) on gc1 127.0.0.1:8095, tmux feln-unsloth:web, via SSH tunnel. ~85 ms/question after 14 s first load. Server and tunnel stopped 2026-10-09.
 - Repo: github.com/mraad/feln-unsloth (private), work merged via PR.
