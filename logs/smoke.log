@@ -1,0 +1,75 @@
+W1009 13:00:45.468000 337049 .venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1009 13:00:45.494000 337049 .venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2026.10.3: Fast Qwen3_5 patching. Transformers: 5.17.0.
+   \\   /|    NVIDIA RTX PRO 6000 Blackwell Server Edition. Num GPUs = 1. Max memory: 94.972 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.14.1+cu130. CUDA: 12.0. CUDA Toolkit: 13.0. Triton: 3.8.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+/home/ubuntu/feln-unsloth/.venv/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+[unsloth_zoo.hf_xet_fallback|WARNING]Download stalled for 'unsloth/Qwen3.5-4B' -- retrying on Xet (attempt 2 of 2)
+/home/ubuntu/feln-unsloth/.venv/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+[unsloth_zoo.hf_xet_fallback|WARNING]Download stalled for 'unsloth/Qwen3.5-4B' -- retrying with HF_HUB_DISABLE_XET=1
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<01:32,  7.84it/s]Loading weights:   4%|▎         | 27/723 [00:00<00:05, 137.76it/s]Loading weights:  11%|█         | 79/723 [00:00<00:02, 297.47it/s]Loading weights:  18%|█▊        | 131/723 [00:00<00:01, 378.94it/s]Loading weights:  25%|██▌       | 181/723 [00:00<00:01, 421.02it/s]Loading weights:  31%|███▏      | 226/723 [00:00<00:01, 427.62it/s]Loading weights:  38%|███▊      | 278/723 [00:00<00:00, 455.44it/s]Loading weights:  46%|████▌     | 330/723 [00:00<00:00, 473.53it/s]Loading weights:  53%|█████▎    | 382/723 [00:00<00:00, 485.89it/s]Loading weights:  61%|██████    | 439/723 [00:01<00:00, 511.49it/s]Loading weights: 100%|██████████| 723/723 [00:01<00:00, 638.63it/s]
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 2615.15it/s]
+`causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+==((====))==  Unsloth - 2x faster free finetuning | Num GPUs used = 1
+   \\   /|    Num examples = 2,400 | Num Epochs = 1 | Total steps = 20
+O^O/ \_/ \    Batch size per device = 8 | Gradient accumulation steps = 4
+\        /    Data Parallel GPUs = 1 | Total batch size (8 x 4 x 1) = 32
+ "-____-"     Trainable parameters = 64,511,492 of 3,072,856,068 (2.10% trained)
+test before training: {'accuracy': 0.056666666666666664, 'ece': 0.029541203454136848, 'loss': 2.487816869417826, 'record_accuracy': 0.056666666666666664}
+  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:53<16:49, 53.12s/it] 10%|█         | 2/20 [00:55<06:55, 23.09s/it] 15%|█▌        | 3/20 [00:57<03:50, 13.53s/it] 20%|██        | 4/20 [00:59<02:24,  9.03s/it] 25%|██▌       | 5/20 [01:01<01:37,  6.52s/it] 30%|███       | 6/20 [01:03<01:10,  5.01s/it] 35%|███▌      | 7/20 [01:05<00:52,  4.07s/it] 40%|████      | 8/20 [01:07<00:41,  3.42s/it] 45%|████▌     | 9/20 [01:09<00:33,  3.01s/it] 50%|█████     | 10/20 [01:11<00:27,  2.71s/it]                                                50%|█████     | 10/20 [01:11<00:27,  2.71s/it] 55%|█████▌    | 11/20 [01:14<00:22,  2.52s/it] 60%|██████    | 12/20 [01:16<00:18,  2.37s/it] 65%|██████▌   | 13/20 [01:18<00:15,  2.28s/it] 70%|███████   | 14/20 [01:20<00:13,  2.21s/it] 75%|███████▌  | 15/20 [01:22<00:10,  2.16s/it] 80%|████████  | 16/20 [01:24<00:08,  2.14s/it] 85%|████████▌ | 17/20 [01:26<00:06,  2.12s/it] 90%|█████████ | 18/20 [01:28<00:04,  2.12s/it] 95%|█████████▌| 19/20 [01:30<00:02,  2.09s/it]100%|██████████| 20/20 [01:32<00:00,  2.09s/it]                                               100%|██████████| 20/20 [01:32<00:00,  2.09s/it]Unsloth: Will smartly offload gradients to save VRAM!
+Unsloth: Double buffering enabled (parallel H2D + compute) for backward pass.
+{'loss': '2.366', 'grad_norm': '5.121', 'learning_rate': '0.00018', 'epoch': '0.1333'}
+{'loss': '1.062', 'grad_norm': '7.948', 'learning_rate': '4.894e-06', 'epoch': '0.2667'}
+
+  0%|          | 0/38 [00:00<?, ?it/s][A
+  5%|▌         | 2/38 [00:00<00:02, 17.22it/s][A
+ 11%|█         | 4/38 [00:00<00:03,  8.73it/s][A
+ 16%|█▌        | 6/38 [00:00<00:04,  7.52it/s][A
+ 18%|█▊        | 7/38 [00:00<00:04,  7.24it/s][A
+ 21%|██        | 8/38 [00:01<00:04,  6.99it/s][A
+ 24%|██▎       | 9/38 [00:01<00:04,  6.83it/s][A
+ 26%|██▋       | 10/38 [00:01<00:04,  6.73it/s][A
+ 29%|██▉       | 11/38 [00:01<00:04,  6.66it/s][A
+ 32%|███▏      | 12/38 [00:01<00:03,  6.61it/s][A
+ 34%|███▍      | 13/38 [00:01<00:03,  6.58it/s][A
+ 37%|███▋      | 14/38 [00:01<00:03,  6.55it/s][A
+ 39%|███▉      | 15/38 [00:02<00:03,  6.52it/s][A
+ 42%|████▏     | 16/38 [00:02<00:03,  6.49it/s][A
+ 45%|████▍     | 17/38 [00:02<00:03,  6.49it/s][A
+ 47%|████▋     | 18/38 [00:02<00:03,  6.48it/s][A
+ 50%|█████     | 19/38 [00:02<00:02,  6.47it/s][A
+ 53%|█████▎    | 20/38 [00:02<00:02,  6.48it/s][A
+ 55%|█████▌    | 21/38 [00:03<00:02,  6.48it/s][A
+ 58%|█████▊    | 22/38 [00:03<00:02,  6.47it/s][A
+ 61%|██████    | 23/38 [00:03<00:02,  6.48it/s][A
+ 63%|██████▎   | 24/38 [00:03<00:02,  6.48it/s][A
+ 66%|██████▌   | 25/38 [00:03<00:02,  6.49it/s][A
+ 68%|██████▊   | 26/38 [00:03<00:01,  6.48it/s][A
+ 71%|███████   | 27/38 [00:03<00:01,  6.48it/s][A
+ 74%|███████▎  | 28/38 [00:04<00:01,  6.46it/s][A
+ 76%|███████▋  | 29/38 [00:04<00:01,  6.47it/s][A
+ 79%|███████▉  | 30/38 [00:04<00:01,  6.44it/s][A
+ 82%|████████▏ | 31/38 [00:04<00:01,  6.45it/s][A
+ 84%|████████▍ | 32/38 [00:04<00:00,  6.46it/s][A
+ 87%|████████▋ | 33/38 [00:04<00:00,  6.46it/s][A
+ 89%|████████▉ | 34/38 [00:05<00:00,  6.46it/s][A
+ 92%|█████████▏| 35/38 [00:05<00:00,  6.46it/s][A
+ 95%|█████████▍| 36/38 [00:05<00:00,  6.44it/s][A
+ 97%|█████████▋| 37/38 [00:05<00:00,  6.46it/s][A
+100%|██████████| 38/38 [00:05<00:00,  6.71it/s][A                                               
+                                               [A100%|██████████| 20/20 [01:39<00:00,  2.09s/it]
+100%|██████████| 38/38 [00:05<00:00,  6.71it/s][A
+                                               [A                                               100%|██████████| 20/20 [01:39<00:00,  2.09s/it]100%|██████████| 20/20 [01:39<00:00,  4.95s/it]
+Unsloth: Restored added_tokens_decoder metadata in /home/ubuntu/feln-unsloth/runs/smoke/adapter/.unsloth-save-oqgzua1m/tokenizer_config.json.
+{'eval_loss': '0.7856', 'eval_runtime': '6.396', 'eval_samples_per_second': '46.9', 'eval_steps_per_second': '5.941', 'epoch': '0.2667'}
+{'train_runtime': '99.04', 'train_samples_per_second': '6.462', 'train_steps_per_second': '0.202', 'train_loss': '1.714', 'epoch': '0.2667'}
+test after training: {'accuracy': 0.76, 'ece': 0.0534518900513649, 'loss': 0.6832550629787147, 'record_accuracy': 0.76}
+test breakdown: {'exact': 0.76, 'primary': 0.9966666666666667, 'layer_set': 0.7633333333333333, 'layer_count': 0.8333333333333334, 'exact_by_count': {1: 0.8979591836734694, 2: 0.718562874251497, 3: 0.7619047619047619}}
+EXIT_CODE 0

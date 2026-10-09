@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FELN Layer Decider</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --card: #fff; --ink: #1c1c1a; --muted: #6b6b66; --line: #e4e4df;
+    --accent: #2f6f62; --accent-soft: #e3efec; --warn: #a4590b; --warn-soft: #fbefe1;
+    --bar: #cfe0db;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413; --card: #1d1d1b; --ink: #ecece8; --muted: #9a9a94; --line: #2e2e2b;
+      --accent: #7cc4b2; --accent-soft: #1f3530; --warn: #f0b36b; --warn-soft: #3a2a17;
+      --bar: #2c4a43;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  textarea { width: 100%; min-height: 84px; resize: vertical; padding: 12px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; }
+  textarea:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .row { display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  select { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); font: inherit; }
+  button { padding: 9px 18px; border: 0; border-radius: 8px; background: var(--accent);
+    color: var(--card); font: inherit; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: wait; }
+  .hint { color: var(--muted); font-size: 13px; margin-left: auto; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+  .examples button { background: transparent; color: var(--muted); border: 1px solid var(--line);
+    font-weight: 400; font-size: 13px; padding: 5px 10px; border-radius: 999px; text-align: left; }
+  .examples button:hover { color: var(--ink); border-color: var(--muted); }
+  #out { margin-top: 20px; display: none; }
+  .answer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 18px; }
+  .layer { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); }
+  .layer.primary { background: var(--accent); color: var(--card); border-color: var(--accent); font-weight: 600; }
+  .sep { color: var(--muted); font-size: 14px; }
+  .meta { display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 13px; margin: 12px 0 18px; }
+  .badge { padding: 2px 10px; border-radius: 999px; font-weight: 600; }
+  .badge.ok { background: var(--accent-soft); color: var(--accent); }
+  .badge.low { background: var(--warn-soft); color: var(--warn); }
+  .bars { display: grid; grid-template-columns: minmax(0, 220px) 1fr 52px; gap: 6px 12px;
+    align-items: center; font-size: 13px; }
+  .bars .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .fill { height: 100%; background: var(--bar); border-radius: 4px; }
+  .top .fill { background: var(--accent); }
+  .top .name { font-weight: 600; }
+  .pct { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .err { color: var(--warn); margin-top: 12px; }
+  @media (max-width: 520px) { .bars { grid-template-columns: minmax(0, 1fr) 70px 44px; } .hint { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>FELN Layer Decider</h1>
+  <p class="sub">Which North Sea layers does a question need, and which one is returned?</p>
+
+  <div class="card">
+    <label for="q" class="sub" style="display:block;margin:0 0 6px">Question</label>
+    <textarea id="q" placeholder="Find oil discoveries within 10 km of gas pipelines."></textarea>
+    <div class="row">
+      <select id="model" aria-label="Model"></select>
+      <button id="go">Decide</button>
+      <span class="hint">⌘/Ctrl + Enter</span>
+    </div>
+    <div class="examples" id="examples"></div>
+    <div class="err" id="err" role="alert"></div>
+
+    <div id="out" aria-live="polite">
+      <div class="answer" id="answer"></div>
+      <div class="meta" id="meta"></div>
+      <div class="bars" id="bars"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const GATE = 0.7;  // confidence gate from docs/REPORT.md: ≥0.7 kept 89% of test at 98.5%
+const EXAMPLES = [
+  "Show me all dry wells.",
+  "Find oil discoveries within 10 km of gas pipelines.",
+  "Which injection pipelines cross condensate discoveries and are within 2 km of salt wells?",
+  "List gas within 5 km of oil.",
+  "Pipelines carrying gas near the TROLL field wells",
+];
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+};
+
+for (const text of EXAMPLES) {
+  const b = el("button", "", text);
+  b.onclick = () => { $("q").value = text; decide(); };
+  $("examples").append(b);
+}
+
+fetch("api/models").then((r) => r.json()).then(({ models, default: def }) => {
+  for (const m of models) $("model").append(new Option(m, m, false, m === def));
+});
+
+async function decide() {
+  const text = $("q").value.trim();
+  if (!text) return $("q").focus();
+  $("go").disabled = true;
+  $("go").textContent = "Deciding…";
+  $("err").textContent = "";
+  try {
+    const r = await fetch("api/decide", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, model: $("model").value }),
+    });
+    if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    render(await r.json());
+  } catch (e) {
+    $("err").textContent = "Request failed: " + e.message;
+  } finally {
+    $("go").disabled = false;
+    $("go").textContent = "Decide";
+  }
+}
+
+function render({ answer, probabilities, ms }) {
+  const [primary, ...secondary] = answer.split("+");
+  const conf = probabilities[0][1];
+
+  const a = $("answer");
+  a.replaceChildren(el("span", "layer primary", primary));
+  if (secondary.length) {
+    a.append(el("span", "sep", "filtered by"));
+    for (const s of secondary) a.append(el("span", "layer", s));
+  }
+
+  const ok = conf >= GATE;
+  $("meta").replaceChildren(
+    el("span", "badge " + (ok ? "ok" : "low"), ok ? "Confident" : "Uncertain: ask the user"),
+    el("span", "", `${(conf * 100).toFixed(1)}% confidence`),
+    el("span", "", `${answer.split("+").length} layer${secondary.length ? "s" : ""}`),
+    el("span", "", `${ms} ms`),
+  );
+
+  $("bars").replaceChildren(...probabilities.flatMap(([name, p], i) => {
+    const cls = i === 0 ? "top" : "";
+    const track = el("div", "track");
+    const fill = el("div", "fill");
+    fill.style.width = `${(p * 100).toFixed(1)}%`;
+    track.append(fill);
+    const row = [el("span", "name", name.replaceAll("+", " + ")), track, el("span", "pct", `${(p * 100).toFixed(1)}%`)];
+    row.forEach((e) => cls && e.classList.add(cls));
+    return row;
+  }));
+  $("out").style.display = "block";
+}
+
+$("go").onclick = decide;
+$("q").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) decide();
+});
+</script>
+</body>
+</html>
